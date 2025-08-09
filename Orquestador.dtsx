@@ -11,10 +11,22 @@
   DTS:LocaleID="17418"
   DTS:ObjectName="Package1"
   DTS:PackageType="5"
-  DTS:VersionBuild="1"
-  DTS:VersionGUID="{7C2F186C-462F-431D-8A54-5FC3430A23D8}">
+  DTS:VersionBuild="4"
+  DTS:VersionGUID="{40A42793-187A-48B2-BE88-0BF0C679707E}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[localhost.TailspinToys2020-US]"
+      DTS:CreationName="ADO.NET:System.Data.SqlClient.SqlConnection, System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
+      DTS:DTSID="{B986EA7E-2116-4379-837C-EC873A046361}"
+      DTS:ObjectName="localhost.TailspinToys2020-US">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=localhost;Initial Catalog=TailspinToys2020-US;Integrated Security=True;TrustServerCertificate=True;Application Name=SSIS-Package1-{B986EA7E-2116-4379-837C-EC873A046361}localhost.TailspinToys2020-US;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
   <DTS:Variables />
   <DTS:Executables>
     <DTS:Executable
@@ -48,7 +60,7 @@
         <NodeLayout
           Size="155,42"
           Id="Package\Llenar DimDate"
-          TopLeft="248,180" />
+          TopLeft="320,248" />
       </GraphLayout>
     </LayoutInfo>
   </Package>
