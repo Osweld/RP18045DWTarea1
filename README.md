@@ -130,5 +130,6 @@ FROM dbo.Sales;
 
 ```
 
+<img width="1103" height="540" alt="image" src="https://github.com/user-attachments/assets/87ecdfc7-acbc-4703-9ba9-465873af8de5" />
 
 
