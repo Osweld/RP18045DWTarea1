@@ -11,8 +11,8 @@
   DTS:LocaleID="17418"
   DTS:ObjectName="Package"
   DTS:PackageType="5"
-  DTS:VersionBuild="1"
-  DTS:VersionGUID="{BE63BE59-BFF2-4B91-B3D8-BC23B97BDC1F}">
+  DTS:VersionBuild="8"
+  DTS:VersionGUID="{CB319A5A-D57C-4F15-977E-AA16673AF034}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
@@ -24,6 +24,16 @@
       <DTS:ObjectData>
         <DTS:ConnectionManager
           DTS:ConnectionString="Data Source=localhost;Initial Catalog=DWTailspinToys;Integrated Security=True;TrustServerCertificate=True;Application Name=SSIS-Package-{0E7D9677-AEA0-4B74-B426-4BABD5060750}localhost.DWTailspinToys;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[localhost.TailspinToys2020-US]"
+      DTS:CreationName="ADO.NET:System.Data.SqlClient.SqlConnection, System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
+      DTS:DTSID="{D2D7D43C-F199-4483-9B77-4239BBE1C54F}"
+      DTS:ObjectName="localhost.TailspinToys2020-US">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=localhost;Initial Catalog=TailspinToys2020-US;Integrated Security=True;TrustServerCertificate=True;Application Name=SSIS-Package-{D2D7D43C-F199-4483-9B77-4239BBE1C54F}localhost.TailspinToys2020-US;" />
       </DTS:ObjectData>
     </DTS:ConnectionManager>
   </DTS:ConnectionManagers>
@@ -43,10 +53,529 @@
       <DTS:ObjectData>
         <SQLTask:SqlTaskData
           SQLTask:Connection="{0E7D9677-AEA0-4B74-B426-4BABD5060750}"
-          SQLTask:SqlStatementSource="DELETE DimProduct" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          SQLTask:SqlStatementSource="DELETE DimProduct;&#xA;DBCC CHECKIDENT ('DimProduct', RESEED, 0);" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Llenar DimProduct"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{F557B752-9A09-483E-8863-6CDF2DEF0901}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Llenar DimProduct"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\Llenar DimProduct\DimProduct"
+              componentClassID="Microsoft.ManagedComponentHost"
+              contactInfo="Carga datos en una base de datos compatible con ADO.NET que use una vista o tabla de base de datos. Se cargan datos en una tabla nueva o existente. Por ejemplo, se usa un proveedor ADO.NET para ODBC para cargar datos en un destino ODBC.;Microsoft Corporation; Microsoft SQL Server; © Microsoft Corporation; Todos los derechos reservados; http://www.microsoft.com/sql/support;2"
+              description="Carga datos en una base de datos compatible con ADO.NET que use una vista o tabla de base de datos. Se cargan datos en una tabla nueva o existente. Por ejemplo, se usa un proveedor ADO.NET para ODBC para cargar datos en un destino ODBC."
+              name="DimProduct"
+              usesDispositions="true"
+              version="2">
+              <properties>
+                <property
+                  dataType="System.String"
+                  description="Nombre de la tabla de la base de datos de destino."
+                  expressionType="Notify"
+                  name="TableOrViewName"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">"dbo"."DimProduct"</property>
+                <property
+                  dataType="System.Int32"
+                  description="Especifique el número de filas por lote. El valor predeterminado es 0, que utiliza el mismo tamaño que el búfer interno de SSIS. "
+                  expressionType="Notify"
+                  name="BatchSize">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Número de segundos antes de que se agote el tiempo de espera de un comando. Un valor de 0 indica un tiempo de espera infinito. "
+                  expressionType="Notify"
+                  name="CommandTimeout">30</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Especifica si se debe usar la interfaz SqlBulkCopy para mejorar el rendimiento de las operaciones de inserción masiva. No todos los proveedores admiten esta interfaz."
+                  expressionType="Notify"
+                  name="UseBulkInsertWhenPossible">true</property>
+                <property
+                  dataType="System.String"
+                  name="UserComponentTypeName">Microsoft.ADONETDestination</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Llenar DimProduct\DimProduct.Connections[IDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[localhost.DWTailspinToys]"
+                  connectionManagerRefId="Package.ConnectionManagers[localhost.DWTailspinToys]"
+                  description="Administrador de conexiones administrado"
+                  name="IDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Llenar DimProduct\DimProduct.Inputs[Entrada de destino de ADO NET]"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="Entrada de destino de ADO NET">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Llenar DimProduct\DimProduct.Inputs[Entrada de destino de ADO NET].Columns[ProductID]"
+                      cachedDataType="i4"
+                      cachedName="ProductID"
+                      externalMetadataColumnId="Package\Llenar DimProduct\DimProduct.Inputs[Entrada de destino de ADO NET].ExternalColumns[productId]"
+                      lineageId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de origen de ADO NET].Columns[ProductID]" />
+                    <inputColumn
+                      refId="Package\Llenar DimProduct\DimProduct.Inputs[Entrada de destino de ADO NET].Columns[ProductSKU]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="ProductSKU"
+                      externalMetadataColumnId="Package\Llenar DimProduct\DimProduct.Inputs[Entrada de destino de ADO NET].ExternalColumns[productSKU]"
+                      lineageId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de origen de ADO NET].Columns[ProductSKU]" />
+                    <inputColumn
+                      refId="Package\Llenar DimProduct\DimProduct.Inputs[Entrada de destino de ADO NET].Columns[ProductName]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="ProductName"
+                      externalMetadataColumnId="Package\Llenar DimProduct\DimProduct.Inputs[Entrada de destino de ADO NET].ExternalColumns[productName]"
+                      lineageId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de origen de ADO NET].Columns[ProductName]" />
+                    <inputColumn
+                      refId="Package\Llenar DimProduct\DimProduct.Inputs[Entrada de destino de ADO NET].Columns[ProductCategory]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="ProductCategory"
+                      externalMetadataColumnId="Package\Llenar DimProduct\DimProduct.Inputs[Entrada de destino de ADO NET].ExternalColumns[productCategory]"
+                      lineageId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de origen de ADO NET].Columns[ProductCategory]" />
+                    <inputColumn
+                      refId="Package\Llenar DimProduct\DimProduct.Inputs[Entrada de destino de ADO NET].Columns[ItemGroup]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="ItemGroup"
+                      externalMetadataColumnId="Package\Llenar DimProduct\DimProduct.Inputs[Entrada de destino de ADO NET].ExternalColumns[itemGroup]"
+                      lineageId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de origen de ADO NET].Columns[ItemGroup]" />
+                    <inputColumn
+                      refId="Package\Llenar DimProduct\DimProduct.Inputs[Entrada de destino de ADO NET].Columns[kitType]"
+                      cachedDataType="wstr"
+                      cachedLength="12"
+                      cachedName="kitType"
+                      externalMetadataColumnId="Package\Llenar DimProduct\DimProduct.Inputs[Entrada de destino de ADO NET].ExternalColumns[kitType]"
+                      lineageId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de origen de ADO NET].Columns[kitType]" />
+                    <inputColumn
+                      refId="Package\Llenar DimProduct\DimProduct.Inputs[Entrada de destino de ADO NET].Columns[channels]"
+                      cachedDataType="wstr"
+                      cachedLength="9"
+                      cachedName="channels"
+                      externalMetadataColumnId="Package\Llenar DimProduct\DimProduct.Inputs[Entrada de destino de ADO NET].ExternalColumns[channels]"
+                      lineageId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de origen de ADO NET].Columns[channels]" />
+                    <inputColumn
+                      refId="Package\Llenar DimProduct\DimProduct.Inputs[Entrada de destino de ADO NET].Columns[Demographic]"
+                      cachedDataType="wstr"
+                      cachedLength="50"
+                      cachedName="Demographic"
+                      externalMetadataColumnId="Package\Llenar DimProduct\DimProduct.Inputs[Entrada de destino de ADO NET].ExternalColumns[demographic]"
+                      lineageId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de origen de ADO NET].Columns[Demographic]" />
+                    <inputColumn
+                      refId="Package\Llenar DimProduct\DimProduct.Inputs[Entrada de destino de ADO NET].Columns[RetailPrice]"
+                      cachedDataType="cy"
+                      cachedName="RetailPrice"
+                      externalMetadataColumnId="Package\Llenar DimProduct\DimProduct.Inputs[Entrada de destino de ADO NET].ExternalColumns[retailPrice]"
+                      lineageId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de origen de ADO NET].Columns[RetailPrice]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Llenar DimProduct\DimProduct.Inputs[Entrada de destino de ADO NET].ExternalColumns[productKey]"
+                      dataType="i4"
+                      name="productKey" />
+                    <externalMetadataColumn
+                      refId="Package\Llenar DimProduct\DimProduct.Inputs[Entrada de destino de ADO NET].ExternalColumns[productId]"
+                      dataType="i4"
+                      name="productId" />
+                    <externalMetadataColumn
+                      refId="Package\Llenar DimProduct\DimProduct.Inputs[Entrada de destino de ADO NET].ExternalColumns[productSKU]"
+                      dataType="wstr"
+                      length="100"
+                      name="productSKU" />
+                    <externalMetadataColumn
+                      refId="Package\Llenar DimProduct\DimProduct.Inputs[Entrada de destino de ADO NET].ExternalColumns[productName]"
+                      dataType="wstr"
+                      length="200"
+                      name="productName" />
+                    <externalMetadataColumn
+                      refId="Package\Llenar DimProduct\DimProduct.Inputs[Entrada de destino de ADO NET].ExternalColumns[productCategory]"
+                      dataType="wstr"
+                      length="100"
+                      name="productCategory" />
+                    <externalMetadataColumn
+                      refId="Package\Llenar DimProduct\DimProduct.Inputs[Entrada de destino de ADO NET].ExternalColumns[itemGroup]"
+                      dataType="wstr"
+                      length="50"
+                      name="itemGroup" />
+                    <externalMetadataColumn
+                      refId="Package\Llenar DimProduct\DimProduct.Inputs[Entrada de destino de ADO NET].ExternalColumns[kitType]"
+                      dataType="wstr"
+                      length="30"
+                      name="kitType" />
+                    <externalMetadataColumn
+                      refId="Package\Llenar DimProduct\DimProduct.Inputs[Entrada de destino de ADO NET].ExternalColumns[channels]"
+                      dataType="wstr"
+                      length="50"
+                      name="channels" />
+                    <externalMetadataColumn
+                      refId="Package\Llenar DimProduct\DimProduct.Inputs[Entrada de destino de ADO NET].ExternalColumns[demographic]"
+                      dataType="wstr"
+                      length="50"
+                      name="demographic" />
+                    <externalMetadataColumn
+                      refId="Package\Llenar DimProduct\DimProduct.Inputs[Entrada de destino de ADO NET].ExternalColumns[retailPrice]"
+                      dataType="numeric"
+                      name="retailPrice"
+                      precision="18"
+                      scale="2" />
+                    <externalMetadataColumn
+                      refId="Package\Llenar DimProduct\DimProduct.Inputs[Entrada de destino de ADO NET].ExternalColumns[effectiveFrom]"
+                      dataType="dbTimeStamp"
+                      name="effectiveFrom" />
+                    <externalMetadataColumn
+                      refId="Package\Llenar DimProduct\DimProduct.Inputs[Entrada de destino de ADO NET].ExternalColumns[effectiveTo]"
+                      dataType="dbTimeStamp"
+                      name="effectiveTo" />
+                    <externalMetadataColumn
+                      refId="Package\Llenar DimProduct\DimProduct.Inputs[Entrada de destino de ADO NET].ExternalColumns[isCurrent]"
+                      dataType="bool"
+                      name="isCurrent" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Llenar DimProduct\DimProduct.Outputs[Salida de error de destino de ADO NET]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Salida de error de destino de ADO NET"
+                  synchronousInputId="Package\Llenar DimProduct\DimProduct.Inputs[Entrada de destino de ADO NET]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Llenar DimProduct\DimProduct.Outputs[Salida de error de destino de ADO NET].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Llenar DimProduct\DimProduct.Outputs[Salida de error de destino de ADO NET].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Llenar DimProduct\DimProduct.Outputs[Salida de error de destino de ADO NET].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Llenar DimProduct\DimProduct.Outputs[Salida de error de destino de ADO NET].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Llenar DimProduct\Obtener datos DimProduct"
+              componentClassID="Microsoft.ManagedComponentHost"
+              contactInfo="Consume datos de SQL Server, OLE DB, ODBC u Oracle mediante el correspondiente proveedor de datos de .NET Framework. Se usa una instrucción Transact-SQL para definir el conjunto de resultados. Por ejemplo, se extraen datos de SQL Server con el proveedor de datos de .NET Framework para SQL Server.;Microsoft Corporation; Microsoft SQL Server; © Microsoft Corporation; Todos los derechos reservados; http://www.microsoft.com/sql/support;4"
+              description="Consume datos de SQL Server, OLE DB, ODBC u Oracle mediante el correspondiente proveedor de datos de .NET Framework. Se usa una instrucción Transact-SQL para definir el conjunto de resultados. Por ejemplo, se extraen datos de SQL Server con el proveedor de datos de .NET Framework para SQL Server."
+              name="Obtener datos DimProduct"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.String"
+                  description="Especifica la instrucción SQL utilizada por el componente para extraer datos."
+                  expressionType="Notify"
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT
+    ProductID,
+    ProductSKU,
+    ProductName,
+    ProductCategory,
+    ItemGroup,
+    CASE KitType
+        WHEN 'KIT' THEN 'Assembly Kit'
+        WHEN 'RTF' THEN 'Ready to Use'
+        ELSE 'Unknown'
+    END AS kitType,
+    CASE Channels
+        WHEN 3 THEN 'Channel 3'
+        WHEN 4 THEN 'Channel 4'
+        WHEN 5 THEN 'Channel 5'
+        WHEN 6 THEN 'Channel 6'
+        ELSE 'Unknown'
+    END AS channels,
+
+    Demographic,
+    RetailPrice
+FROM dbo.Product;</property>
+                <property
+                  dataType="System.Int32"
+                  description="Número de segundos antes de que se agote el tiempo de espera de un comando. Un valor de 0 indica un tiempo de espera infinito."
+                  name="CommandTimeout">30</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indica si se debe permitir que columnas externas que no sean de cadenas se conviertan implícitamente en cadenas en las columnas de salida."
+                  name="AllowImplicitStringConversion">true</property>
+                <property
+                  dataType="System.String"
+                  description="Nombre de la tabla de la base de datos de origen."
+                  expressionType="Notify"
+                  name="TableOrViewName"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Especificar el modo de recuperar información de columnas externas"
+                  name="AccessMode"
+                  typeConverter="Microsoft.SqlServer.Dts.Pipeline.DataReaderSourceAdapter+EnumToStringConverter">2</property>
+                <property
+                  dataType="System.String"
+                  name="UserComponentTypeName">Microsoft.DataReaderSourceAdapter</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Llenar DimProduct\Obtener datos DimProduct.Connections[IDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[localhost.TailspinToys2020-US]"
+                  connectionManagerRefId="Package.ConnectionManagers[localhost.TailspinToys2020-US]"
+                  description="Administrador de conexiones administrado"
+                  name="IDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de origen de ADO NET]"
+                  name="Salida de origen de ADO NET">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de origen de ADO NET].Columns[ProductID]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de origen de ADO NET].ExternalColumns[ProductID]"
+                      lineageId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de origen de ADO NET].Columns[ProductID]"
+                      name="ProductID"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de origen de ADO NET].Columns[ProductSKU]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de origen de ADO NET].ExternalColumns[ProductSKU]"
+                      length="50"
+                      lineageId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de origen de ADO NET].Columns[ProductSKU]"
+                      name="ProductSKU"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de origen de ADO NET].Columns[ProductName]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de origen de ADO NET].ExternalColumns[ProductName]"
+                      length="50"
+                      lineageId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de origen de ADO NET].Columns[ProductName]"
+                      name="ProductName"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de origen de ADO NET].Columns[ProductCategory]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de origen de ADO NET].ExternalColumns[ProductCategory]"
+                      length="50"
+                      lineageId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de origen de ADO NET].Columns[ProductCategory]"
+                      name="ProductCategory"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de origen de ADO NET].Columns[ItemGroup]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de origen de ADO NET].ExternalColumns[ItemGroup]"
+                      length="50"
+                      lineageId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de origen de ADO NET].Columns[ItemGroup]"
+                      name="ItemGroup"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de origen de ADO NET].Columns[kitType]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de origen de ADO NET].ExternalColumns[kitType]"
+                      length="12"
+                      lineageId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de origen de ADO NET].Columns[kitType]"
+                      name="kitType"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de origen de ADO NET].Columns[channels]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de origen de ADO NET].ExternalColumns[channels]"
+                      length="9"
+                      lineageId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de origen de ADO NET].Columns[channels]"
+                      name="channels"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de origen de ADO NET].Columns[Demographic]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de origen de ADO NET].ExternalColumns[Demographic]"
+                      length="50"
+                      lineageId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de origen de ADO NET].Columns[Demographic]"
+                      name="Demographic"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de origen de ADO NET].Columns[RetailPrice]"
+                      dataType="cy"
+                      errorOrTruncationOperation="Conversión"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de origen de ADO NET].ExternalColumns[RetailPrice]"
+                      lineageId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de origen de ADO NET].Columns[RetailPrice]"
+                      name="RetailPrice"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de origen de ADO NET].ExternalColumns[ProductID]"
+                      dataType="i4"
+                      name="ProductID" />
+                    <externalMetadataColumn
+                      refId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de origen de ADO NET].ExternalColumns[ProductSKU]"
+                      dataType="wstr"
+                      length="50"
+                      name="ProductSKU" />
+                    <externalMetadataColumn
+                      refId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de origen de ADO NET].ExternalColumns[ProductName]"
+                      dataType="wstr"
+                      length="50"
+                      name="ProductName" />
+                    <externalMetadataColumn
+                      refId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de origen de ADO NET].ExternalColumns[ProductCategory]"
+                      dataType="wstr"
+                      length="50"
+                      name="ProductCategory" />
+                    <externalMetadataColumn
+                      refId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de origen de ADO NET].ExternalColumns[ItemGroup]"
+                      dataType="wstr"
+                      length="50"
+                      name="ItemGroup" />
+                    <externalMetadataColumn
+                      refId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de origen de ADO NET].ExternalColumns[kitType]"
+                      dataType="wstr"
+                      length="12"
+                      name="kitType" />
+                    <externalMetadataColumn
+                      refId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de origen de ADO NET].ExternalColumns[channels]"
+                      dataType="wstr"
+                      length="9"
+                      name="channels" />
+                    <externalMetadataColumn
+                      refId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de origen de ADO NET].ExternalColumns[Demographic]"
+                      dataType="wstr"
+                      length="50"
+                      name="Demographic" />
+                    <externalMetadataColumn
+                      refId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de origen de ADO NET].ExternalColumns[RetailPrice]"
+                      dataType="cy"
+                      name="RetailPrice" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de error de origen de ADO NET]"
+                  isErrorOut="true"
+                  name="Salida de error de origen de ADO NET">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de error de origen de ADO NET].Columns[ProductID]"
+                      dataType="i4"
+                      lineageId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de error de origen de ADO NET].Columns[ProductID]"
+                      name="ProductID" />
+                    <outputColumn
+                      refId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de error de origen de ADO NET].Columns[ProductSKU]"
+                      dataType="wstr"
+                      length="50"
+                      lineageId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de error de origen de ADO NET].Columns[ProductSKU]"
+                      name="ProductSKU" />
+                    <outputColumn
+                      refId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de error de origen de ADO NET].Columns[ProductName]"
+                      dataType="wstr"
+                      length="50"
+                      lineageId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de error de origen de ADO NET].Columns[ProductName]"
+                      name="ProductName" />
+                    <outputColumn
+                      refId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de error de origen de ADO NET].Columns[ProductCategory]"
+                      dataType="wstr"
+                      length="50"
+                      lineageId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de error de origen de ADO NET].Columns[ProductCategory]"
+                      name="ProductCategory" />
+                    <outputColumn
+                      refId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de error de origen de ADO NET].Columns[ItemGroup]"
+                      dataType="wstr"
+                      length="50"
+                      lineageId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de error de origen de ADO NET].Columns[ItemGroup]"
+                      name="ItemGroup" />
+                    <outputColumn
+                      refId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de error de origen de ADO NET].Columns[kitType]"
+                      dataType="wstr"
+                      length="12"
+                      lineageId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de error de origen de ADO NET].Columns[kitType]"
+                      name="kitType" />
+                    <outputColumn
+                      refId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de error de origen de ADO NET].Columns[channels]"
+                      dataType="wstr"
+                      length="9"
+                      lineageId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de error de origen de ADO NET].Columns[channels]"
+                      name="channels" />
+                    <outputColumn
+                      refId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de error de origen de ADO NET].Columns[Demographic]"
+                      dataType="wstr"
+                      length="50"
+                      lineageId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de error de origen de ADO NET].Columns[Demographic]"
+                      name="Demographic" />
+                    <outputColumn
+                      refId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de error de origen de ADO NET].Columns[RetailPrice]"
+                      dataType="cy"
+                      lineageId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de error de origen de ADO NET].Columns[RetailPrice]"
+                      name="RetailPrice" />
+                    <outputColumn
+                      refId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de error de origen de ADO NET].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de error de origen de ADO NET].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de error de origen de ADO NET].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de error de origen de ADO NET].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\Llenar DimProduct.Paths[Salida de origen de ADO NET]"
+              endId="Package\Llenar DimProduct\DimProduct.Inputs[Entrada de destino de ADO NET]"
+              name="Salida de origen de ADO NET"
+              startId="Package\Llenar DimProduct\Obtener datos DimProduct.Outputs[Salida de origen de ADO NET]" />
+          </paths>
+        </pipeline>
       </DTS:ObjectData>
     </DTS:Executable>
   </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Restricción]"
+      DTS:CreationName=""
+      DTS:DTSID="{68D890F4-1B8B-4BE6-AC84-E9893FF8938A}"
+      DTS:From="Package\Limpiar DimProduct"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Restricción"
+      DTS:To="Package\Llenar DimProduct" />
+  </DTS:PrecedenceConstraints>
   <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
 <!--Esta sección CDATA contiene la información de diseño del paquete. Esta sección incluye información como, por ejemplo, las coordenadas (x,y), el ancho y el alto.-->
 <!--Si edita manualmente esta sección y comete un error, puede eliminarlo. -->
@@ -58,13 +587,117 @@
     design-time-name="Package">
     <LayoutInfo>
       <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph">
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
           Size="176,42"
           Id="Package\Limpiar DimProduct"
           TopLeft="219,99" />
+        <NodeLayout
+          Size="170,42"
+          Id="Package\Llenar DimProduct"
+          TopLeft="330,221" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Restricción]"
+          TopLeft="307,141">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="108,80"
+              Start="0,0"
+              End="108,72.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,36" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,36"
+                    Point2="0,40"
+                    Point3="4,40" />
+                  <mssgle:LineSegment
+                    End="104,40" />
+                  <mssgle:CubicBezierSegment
+                    Point1="104,40"
+                    Point2="108,40"
+                    Point3="108,44" />
+                  <mssgle:LineSegment
+                    End="108,72.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
       </GraphLayout>
     </LayoutInfo>
   </Package>
+  <TaskHost
+    design-time-name="Package\Llenar DimProduct">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="209,42"
+          Id="Package\Llenar DimProduct\Obtener datos DimProduct"
+          TopLeft="297,196" />
+        <NodeLayout
+          Size="137,42"
+          Id="Package\Llenar DimProduct\DimProduct"
+          TopLeft="457,297" />
+        <EdgeLayout
+          Id="Package\Llenar DimProduct.Paths[Salida de origen de ADO NET]"
+          TopLeft="401.5,238">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="124,59"
+              Start="0,0"
+              End="124,51.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,25.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,25.5"
+                    Point2="0,29.5"
+                    Point3="4,29.5" />
+                  <mssgle:LineSegment
+                    End="120,29.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="120,29.5"
+                    Point2="124,29.5"
+                    Point3="124,33.5" />
+                  <mssgle:LineSegment
+                    End="124,51.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Llenar DimProduct\Obtener datos DimProduct">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Llenar DimProduct\DimProduct">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
 </Objects>]]></DTS:DesignTimeProperties>
 </DTS:Executable>
